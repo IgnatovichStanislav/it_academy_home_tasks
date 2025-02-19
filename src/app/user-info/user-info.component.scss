@@ -1,0 +1,38 @@
+.user-info {
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.user-info .user-pic {
+  text-align: center;
+}
+
+.user-info .user-pic img {
+  width: 50%;
+  height: 50%;
+  border-radius: 50% !important;
+  margin: 0 auto;
+  border: 1px solid lightgrey;
+}
+
+.user-info .user-title {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.user-info .user-title-name {
+  color: #5a7391;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+
+.user-info .user-title-job {
+  text-transform: uppercase;
+  color: #5b9bd1;
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 7px;
+  text-decoration: none;
+}
