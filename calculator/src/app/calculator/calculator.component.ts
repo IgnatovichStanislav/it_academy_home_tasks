@@ -13,8 +13,36 @@ export class CalculatorComponent {
   calculationResult: string = '';
   isDarkMode = false;
 
-  onCalculatorButtonClick(event: string): void {
-    if (!isNaN(parseInt(event)) || !this.calculationResult.endsWith(event)) {
+  buttons: {
+    displayValue: string;
+    handleClick: (event?: string | undefined) => void;
+  }[] = [
+    { displayValue: '1', handleClick: (e) => this.onCalculatorButtonClick(e) },
+    { displayValue: '2', handleClick: (e) => this.onCalculatorButtonClick(e) },
+    { displayValue: '3', handleClick: (e) => this.onCalculatorButtonClick(e) },
+    { displayValue: '+', handleClick: (e) => this.onCalculatorButtonClick(e) },
+
+    { displayValue: '4', handleClick: (e) => this.onCalculatorButtonClick(e) },
+    { displayValue: '5', handleClick: (e) => this.onCalculatorButtonClick(e) },
+    { displayValue: '6', handleClick: (e) => this.onCalculatorButtonClick(e) },
+    { displayValue: '-', handleClick: (e) => this.onCalculatorButtonClick(e) },
+
+    { displayValue: '7', handleClick: (e) => this.onCalculatorButtonClick(e) },
+    { displayValue: '8', handleClick: (e) => this.onCalculatorButtonClick(e) },
+    { displayValue: '9', handleClick: (e) => this.onCalculatorButtonClick(e) },
+    { displayValue: '*', handleClick: (e) => this.onCalculatorButtonClick(e) },
+
+    { displayValue: '0', handleClick: (e) => this.onCalculatorButtonClick(e) },
+    { displayValue: '/', handleClick: (e) => this.onCalculatorButtonClick(e) },
+    { displayValue: '=', handleClick: (e) => this.calculate() },
+    { displayValue: 'C', handleClick: (e) => this.clearResult() },
+  ];
+
+  onCalculatorButtonClick(event?: string): void {
+    if (
+      event &&
+      (!isNaN(parseInt(event)) || !this.calculationResult.endsWith(event))
+    ) {
       this.calculationResult += event;
     }
   }
