@@ -1,0 +1,14 @@
+input {
+  padding: 15px;
+  font-size: 18px;
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+  background-color: var(--result-bg-light);
+  color: var(--result-color-light);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+input.dark-mode {
+  background-color: var(--result-bg-dark);
+  color: var(--result-color-dark);
+}

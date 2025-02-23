@@ -1,0 +1,99 @@
+<div class="calculator" [ngClass]="{ 'dark-mode': isDarkMode }">
+  <div class="result">
+    <app-calculator-result
+      [isDarkMode]="isDarkMode"
+      [result]="calculationResult"
+    ></app-calculator-result>
+  </div>
+
+  <app-calculator-button
+    [isDarkMode]="isDarkMode"
+    displayValue="1"
+    (handleClick)="onCalculatorButtonClick($event)"
+  ></app-calculator-button>
+  <app-calculator-button
+    [isDarkMode]="isDarkMode"
+    displayValue="2"
+    (handleClick)="onCalculatorButtonClick($event)"
+  ></app-calculator-button>
+  <app-calculator-button
+    [isDarkMode]="isDarkMode"
+    displayValue="3"
+    (handleClick)="onCalculatorButtonClick($event)"
+  ></app-calculator-button>
+  <app-calculator-button
+    [isDarkMode]="isDarkMode"
+    displayValue="+"
+    (handleClick)="onCalculatorButtonClick($event)"
+  ></app-calculator-button>
+
+  <app-calculator-button
+    [isDarkMode]="isDarkMode"
+    displayValue="4"
+    (handleClick)="onCalculatorButtonClick($event)"
+  ></app-calculator-button>
+  <app-calculator-button
+    [isDarkMode]="isDarkMode"
+    displayValue="5"
+    (handleClick)="onCalculatorButtonClick($event)"
+  ></app-calculator-button>
+  <app-calculator-button
+    [isDarkMode]="isDarkMode"
+    displayValue="6"
+    (handleClick)="onCalculatorButtonClick($event)"
+  ></app-calculator-button>
+  <app-calculator-button
+    [isDarkMode]="isDarkMode"
+    displayValue="-"
+    (handleClick)="onCalculatorButtonClick($event)"
+  ></app-calculator-button>
+
+  <app-calculator-button
+    [isDarkMode]="isDarkMode"
+    displayValue="7"
+    (handleClick)="onCalculatorButtonClick($event)"
+  ></app-calculator-button>
+  <app-calculator-button
+    [isDarkMode]="isDarkMode"
+    displayValue="8"
+    (handleClick)="onCalculatorButtonClick($event)"
+  ></app-calculator-button>
+  <app-calculator-button
+    [isDarkMode]="isDarkMode"
+    displayValue="9"
+    (handleClick)="onCalculatorButtonClick($event)"
+  ></app-calculator-button>
+  <app-calculator-button
+    [isDarkMode]="isDarkMode"
+    displayValue="*"
+    (handleClick)="onCalculatorButtonClick($event)"
+  ></app-calculator-button>
+
+  <app-calculator-button
+    [isDarkMode]="isDarkMode"
+    displayValue="0"
+    (handleClick)="onCalculatorButtonClick($event)"
+  ></app-calculator-button>
+  <app-calculator-button
+    [isDarkMode]="isDarkMode"
+    displayValue="/"
+    (handleClick)="onCalculatorButtonClick($event)"
+  ></app-calculator-button>
+  <app-calculator-button
+    [isDarkMode]="isDarkMode"
+    displayValue="="
+    (handleClick)="calculate()"
+  ></app-calculator-button>
+  <app-calculator-button
+    [isDarkMode]="isDarkMode"
+    displayValue="C"
+    (handleClick)="clearResult()"
+  ></app-calculator-button>
+  <button
+    class="dark-mode-toggler"
+    (click)="onTogglerClick()"
+    title="{{ isDarkMode ? 'Dark' : 'Light' }}"
+  >
+    {{ isDarkMode ? "D" : "L" }}
+  </button>
+</div>
