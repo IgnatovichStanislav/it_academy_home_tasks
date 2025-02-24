@@ -14,7 +14,6 @@ export class CalculatorButtonComponent {
   @Input() isDarkMode: boolean = false;
 
   onButtonClick(): void {
-    console.log('Button onButtonClick', this.displayValue);
     this.handleClick.emit(this.displayValue);
   }
 }
