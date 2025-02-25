@@ -1,0 +1,40 @@
+<div class="calculator" [ngClass]="{ 'dark-mode': isDarkMode }">
+  <div class="result">
+    <app-calculator-result
+      [isDarkMode]="isDarkMode"
+      [result]="calculationResult"
+    ></app-calculator-result>
+  </div>
+
+  <app-calculator-button
+    *ngFor="let button of buttons"
+    [isDarkMode]="isDarkMode"
+    displayValue="{{ button.displayValue }}"
+    (handleClick)="button.handleClick($event)"
+  >
+  </app-calculator-button>
+
+  <!-- <button
+    class="dark-mode-toggler"
+    (click)="onTogglerClick()"
+    title="{{ isDarkMode ? 'Dark' : 'Light' }}"
+  >
+    {{ isDarkMode ? "D" : "L" }}
+  </button> -->
+
+  <!--JUST FOR USING ngIf-->
+  <button
+    *ngIf="isDarkMode; else lightModeButton"
+    class="dark-mode-toggler"
+    (click)="onTogglerClick()"
+    title="Dark"
+  >
+    D
+  </button>
+
+  <ng-template #lightModeButton>
+    <button class="dark-mode-toggler" (click)="onTogglerClick()" title="Light">
+      L
+    </button>
+  </ng-template>
+</div>
