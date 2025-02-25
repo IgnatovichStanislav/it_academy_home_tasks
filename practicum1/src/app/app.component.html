@@ -1,0 +1,10 @@
+<!-- <app-dynamic-container></app-dynamic-container> -->
+<!-- <app-parent></app-parent> -->
+
+<!-- The appAdvancedIf directive is used to conditionally display the paragraph element.
+     The 'condition' property determines whether the element should be visible.
+     The 'delay' property specifies the delay in milliseconds before the element is displayed. -->
+<p *appAdvancedIf="{ condition: isVisible, delay: 5000 }">
+  Текст с задержкой 5 сек
+</p>
+<button (click)="isVisible = !isVisible">Toggle</button>
