@@ -4,9 +4,10 @@ import { ParentComponent } from './parent/parent.component';
 import { AdvancedIfDirective } from './directives/advanced-if.directive';
 @Component({
   selector: 'app-root',
-  imports: [],
+  imports: [AdvancedIfDirective, ParentComponent, DynamicContainerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
+  standalone:true
 })
 export class AppComponent {
   title = 'practicum1';

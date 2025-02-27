@@ -9,7 +9,7 @@ import {
 @Component({
   selector: 'app-dynamic-container',
   imports: [],
-  templateUrl: './dynamic-container.component.html',
+  templateUrl: './dynamic-container.component.html',standalone:true
 })
 export class DynamicContainerComponent {
   @ViewChild('tpl', { read: TemplateRef }) tpl!: TemplateRef<any>;

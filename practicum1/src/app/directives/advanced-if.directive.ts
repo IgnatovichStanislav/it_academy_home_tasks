@@ -8,16 +8,16 @@ import {
 
 @Directive({
   selector: '[appAdvancedIf]',
+  standalone:true
 })
 export class AdvancedIfDirective {
-  @Input() set appAdvanceIf({
+  @Input() set appAdvancedIf({
     condition,
     delay,
   }: {
     condition: boolean;
     delay: number;
   }) {
-    console.log(this.templateRef);
     if (this.delayTimeout) clearTimeout(this.delayTimeout);
     if (condition) {
       this.delayTimeout = setTimeout(() => {

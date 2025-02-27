@@ -10,7 +10,7 @@ import { ChildComponent } from '../child/child.component';
   selector: 'app-parent',
   imports: [ChildComponent],
   templateUrl: './parent.component.html',
-  styleUrl: './parent.component.scss',
+  styleUrl: './parent.component.scss',standalone:true
 })
 export class ParentComponent implements AfterViewInit {
   @ViewChild('child') child!: ChildComponent;
