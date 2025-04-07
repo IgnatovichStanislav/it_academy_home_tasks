@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { UserService } from '../../core/services/UserService';
 import { User } from '../../core/models/user';
 import { NgIf } from '@angular/common';
+import { IUserService } from '../../core/services/contracts/IUserService';
 
 @Component({
   selector: 'app-navbar',
@@ -12,8 +13,11 @@ import { NgIf } from '@angular/common';
 })
 export class NavbarComponent {
   user: User | null = null;
+  userService: IUserService;
 
-  constructor(private userService: UserService) {}
+  constructor(@Inject(UserService) userService: IUserService) {
+    this.userService = userService;
+  }
 
   ngOnInit() {
     this.user = this.userService.getUser();

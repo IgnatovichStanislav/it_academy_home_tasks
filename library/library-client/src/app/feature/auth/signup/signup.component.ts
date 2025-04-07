@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../core/services/AuthenticationService';
 import { NgIf } from '@angular/common';
 import { charsDigitsValidator } from '../../../core/validators/chars.digits.validator';
+import { IAuthenticationService } from '../../../core/services/contracts/IAuthenticationService';
 
 @Component({
   selector: 'app-signup',
@@ -28,6 +29,18 @@ import { charsDigitsValidator } from '../../../core/validators/chars.digits.vali
   styleUrls: ['../auth.component.scss'],
 })
 export class SignupComponent {
+  error: string | null = null;
+  authenticationService: IAuthenticationService;
+  router: Router;
+
+  constructor(
+    @Inject(AuthenticationService) authService: IAuthenticationService,
+    router: Router
+  ) {
+    this.authenticationService = authService;
+    this.router = router;
+  }
+
   form: FormGroup = new FormGroup({
     username: new FormControl('', [
       Validators.required,
@@ -51,13 +64,6 @@ export class SignupComponent {
       charsDigitsValidator(),
     ]),
   });
-
-  error: string | null = null;
-
-  constructor(
-    private authenticationService: AuthenticationService,
-    private router: Router
-  ) {}
 
   submit() {
     if (this.form.valid) {

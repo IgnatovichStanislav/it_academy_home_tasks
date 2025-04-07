@@ -8,16 +8,16 @@ namespace LibraryApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class BooksController(IBookService bookService,IFavoriteBookService favoriteBookService) : ControllerBase
+    public class BooksController(IBookService bookService, IFavoriteBookService favoriteBookService) : ControllerBase
     {
         [HttpGet("GetByFilter")]
-        public ActionResult<Book> Get([FromQuery]BooksFilterRequest filter)
+        public async Task<ActionResult<Book>> Get([FromQuery] BooksFilterRequest filter)
         {
             int.TryParse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value,
                 out var accountId);
 
             var books = bookService.Get(filter, accountId);
-       
+            await Task.Delay(700);
             return Ok(books);
         }
 

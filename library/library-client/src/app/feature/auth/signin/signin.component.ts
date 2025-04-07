@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -12,6 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../core/services/AuthenticationService';
 import { NgIf } from '@angular/common';
+import { IAuthenticationService } from '../../../core/services/contracts/IAuthenticationService';
 
 @Component({
   selector: 'app-signin',
@@ -25,9 +26,21 @@ import { NgIf } from '@angular/common';
   ],
   templateUrl: './signin.component.html',
   styleUrls: ['../auth.component.scss'],
-  providers: [AuthenticationService],
 })
 export class SigninComponent {
+  @Input() error: string | null = '';
+  @Output() submitEM = new EventEmitter();
+  authService: IAuthenticationService;
+  router: Router;
+
+  constructor(
+    @Inject(AuthenticationService) authService: IAuthenticationService,
+    router: Router
+  ) {
+    this.authService = authService;
+    this.router = router;
+  }
+
   form: FormGroup = new FormGroup({
     username: new FormControl('', [
       Validators.required,
@@ -38,15 +51,6 @@ export class SigninComponent {
       Validators.minLength(4),
     ]),
   });
-
-  @Input() error: string | null = '';
-
-  @Output() submitEM = new EventEmitter();
-
-  constructor(
-    private authService: AuthenticationService,
-    private router: Router
-  ) {}
 
   submit() {
     if (this.form.valid) {

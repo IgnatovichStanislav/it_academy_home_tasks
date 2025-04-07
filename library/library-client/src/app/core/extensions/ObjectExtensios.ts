@@ -1,9 +1,19 @@
-export function cleanObjectProperties<T extends object>(obj: T): Partial<T> {
-  Object.keys(obj).forEach((key) => {
-    const value = obj[key as keyof T];
+declare global {
+  interface Object {
+    cleanProperties<T extends object>(this: T): Partial<T>;
+  }
+}
+
+Object.prototype.cleanProperties = function <T extends object>(
+  this: T
+): Partial<T> {
+  Object.keys(this).forEach((key) => {
+    const value = this[key as keyof T];
     if (value === undefined || value === null) {
-      delete obj[key as keyof T];
+      delete this[key as keyof T];
     }
   });
-  return obj;
-}
+  return this;
+};
+
+export {};

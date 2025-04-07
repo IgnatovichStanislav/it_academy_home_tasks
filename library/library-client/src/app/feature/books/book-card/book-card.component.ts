@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { of } from 'rxjs';
 import { Book } from '../../../core/models/books/Book';
 import { NgIf } from '@angular/common';
@@ -9,6 +9,8 @@ import { ButtonComponent } from '../../../shared/components/buttons/button.compo
 import { switchMap, tap } from 'rxjs';
 import { FavoritesService } from '../../../core/services/FavoritesService';
 import { FavoriteBook } from '../../../core/models/favoriteBook/FavoriteBook';
+import { IFavoritesService } from '../../../core/services/contracts/IFavoritesService';
+
 @Component({
   selector: 'app-book-card',
   imports: [NgIf, DatePipe, ButtonComponent],
@@ -19,8 +21,10 @@ export class BookCardComponent {
   @Input() book!: Book;
   @Input() showCategory: boolean = false;
   currentUser: User | null = null;
+  favoritesService: IFavoritesService;
 
-  constructor(public favoritesService: FavoritesService) {
+  constructor(@Inject(FavoritesService) favoritesService: IFavoritesService) {
+    this.favoritesService = favoritesService;
     this.currentUser = getUser();
   }
 

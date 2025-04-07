@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, switchMap } from 'rxjs';
+import { Component, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Book } from '../../core/models/books/Book';
 import { BooksFilter } from '../../core/models/books/BooksFilter';
 import { BooksUiDataService } from '../../core/ui-data-services/BooksUiDataService';
@@ -22,27 +22,20 @@ import { BooksClientSideFilterPipe } from '../../shared/pipes/books-client-side-
 })
 export class BooksComponent {
   books: Book[] = [];
-  filter = new BehaviorSubject<BooksFilter>({});
   search = '';
 
-  constructor(booksUiDataService: BooksUiDataService) {
-    this.filter
-      .pipe(
-        switchMap((filter: BooksFilter) =>
-          booksUiDataService.booksPageData(filter)
-        )
-      )
-      .subscribe((books: Book[]) => {
-        this.books = books;
-      });
-  }
+  constructor() {}
 
-  onSearchInput(search: string): void {
-    this.search = search;
-  }
-  onFilterChange(filter: BooksFilter): void {
-    console.log(filter);
-    this.filter.next(filter);
+  @ViewChild(BooksFilterComponent) booksFilterComponent!: BooksFilterComponent;
+
+  ngAfterViewInit(): void {
+    this.booksFilterComponent.booksObservable.subscribe(
+      (books: Book[]) => (this.books = books)
+    );
+
+    this.booksFilterComponent.searchObservable.subscribe(
+      (search: string) => (this.search = search)
+    );
   }
 
   onBookClick(book: Book): void {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../config';
@@ -7,6 +7,7 @@ import { SigninRequest, SignupRequest } from '../models/auth';
 import { UserService } from './UserService';
 import { IAuthenticationService } from './contracts/IAuthenticationService';
 import { TokenResponse } from '../models/auth/TokenResponse';
+import { IUserService } from './contracts/IUserService';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,10 @@ import { TokenResponse } from '../models/auth/TokenResponse';
 export class AuthenticationService implements IAuthenticationService {
   http: HttpClient;
   userService: UserService;
-  constructor(http: HttpClient, userService: UserService) {
+  constructor(
+    http: HttpClient,
+    @Inject(UserService) userService: IUserService
+  ) {
     this.http = http;
     this.userService = userService;
   }

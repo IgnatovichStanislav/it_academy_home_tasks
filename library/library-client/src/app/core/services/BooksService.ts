@@ -5,7 +5,7 @@ import { ApiPaths } from '../api-paths';
 import { environment } from '../config';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Book } from '../models/books/Book';
-import { cleanObjectProperties } from '../extensions/ObjectExtensios';
+import '../extensions/ObjectExtensios';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +19,7 @@ export class BooksService {
   getByFilter(filter: BooksFilter): Observable<Book[]> {
     const url = `${environment.baseApiUrl}${ApiPaths.BooksGetByFilter}`;
     const params = new HttpParams({
-      fromObject: cleanObjectProperties({ ...filter }),
+      fromObject: { ...filter.cleanProperties() },
     });
     return this.http.get<Book[]>(url, { params });
   }

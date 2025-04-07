@@ -1,10 +1,7 @@
-<div class="container mt-1 books">
+<div class="container mt-1 books" [style]="{ minHeight: '100vh' }">
   <div class="row">
     <div class="col-12">
-      <app-books-filter
-        (onChange)="onFilterChange($event)"
-        (onSearchInput)="onSearchInput($event)"
-      ></app-books-filter>
+      <app-books-filter></app-books-filter>
     </div>
   </div>
   <div class="row" [ngStyle]="{ 'justify-content': 'center' }">
