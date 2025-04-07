@@ -13,9 +13,13 @@ export class BooksClientSideFilterPipe implements PipeTransform {
 
     return books.filter(
       (book: Book) =>
-        book.title.toLocaleLowerCase().includes(search) ||
-        book.author?.name.toLocaleLowerCase().includes(search) ||
-        book.category?.name.toLocaleLowerCase().includes(search)
+        book.title.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
+        book.author?.name
+          .toLocaleLowerCase()
+          .includes(search.toLocaleLowerCase()) ||
+        book.category?.name
+          .toLocaleLowerCase()
+          .includes(search.toLocaleLowerCase())
     );
   }
 }
