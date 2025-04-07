@@ -4,7 +4,7 @@ import { Book } from '../../../core/models/books/Book';
 import { NgIf } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { User } from '../../../core/models/user';
-import { getUser } from '../../../core/helpers/userHelper';
+import { getUser } from '../../../core/helpers/UserHelper';
 import { ButtonComponent } from '../../../shared/components/buttons/button.component';
 import { switchMap, tap } from 'rxjs';
 import { FavoritesService } from '../../../core/services/FavoritesService';

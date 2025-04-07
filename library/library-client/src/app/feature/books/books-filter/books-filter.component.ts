@@ -7,7 +7,6 @@ import { selectListItem } from '../../../core/models/selectListItem';
 import { AuthorsService } from '../../../core/services/AuthorsService';
 import { Author } from '../../../core/models/authors/Author';
 import { NgIf } from '@angular/common';
-import { getUser } from '../../../core/helpers/userHelper';
 import { User } from '../../../core/models/user';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
@@ -16,6 +15,8 @@ import { Observable } from 'rxjs';
 import { Book } from '../../../core/models/books/Book';
 import { IAuthorsService } from '../../../core/services/contracts/IAuthorsService';
 import { IBooksUiDataService } from '../../../core/ui-data-services/contracts/IBooksUiDataService';
+import { UserService } from '../../../core/services/UserService';
+import { IUserService } from '../../../core/services/contracts/IUserService';
 
 @Component({
   selector: 'app-books-filter',
@@ -36,11 +37,14 @@ export class BooksFilterComponent implements OnInit {
   ];
 
   authorOptions: selectListItem[] = [];
+  userService: IUserService;
 
   constructor(
     @Inject(AuthorsService) authorsService: IAuthorsService,
-    @Inject(BooksUiDataService) booksUiDataService: IBooksUiDataService
+    @Inject(BooksUiDataService) booksUiDataService: IBooksUiDataService,
+    @Inject(UserService) userService: IUserService
   ) {
+    this.userService = userService;
     authorsService.getAuthors().subscribe((authors) => {
       this.authorOptions = authors.map<selectListItem>(
         (author: Author): selectListItem => {
@@ -57,7 +61,7 @@ export class BooksFilterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentUser = getUser();
+    this.currentUser = this.userService.getUser();
   }
 
   onSeachInput(value: string): void {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Book } from '../models/books/Book';
 import { BooksFilter } from '../models/books/BooksFilter';
 import { BooksService } from '../services/BooksService';
@@ -8,28 +8,36 @@ import { AuthorsService } from '../services/AuthorsService';
 import '../extensions/ArrayExtensions';
 import { FavoritesService } from '../services/FavoritesService';
 import { FavoriteBook } from '../models/favoriteBook/FavoriteBook';
-import { getUser } from '../helpers/userHelper';
 import { IBooksUiDataService } from './contracts/IBooksUiDataService';
+import { UserService } from '../services/UserService';
+import { IUserService } from '../services/contracts/IUserService';
+import { IFavoritesService } from '../services/contracts/IFavoritesService';
+import { IAuthorsService } from '../services/contracts/IAuthorsService';
+import { ICategoriesService } from '../services/contracts/ICategoriesService';
+import { IBooksService } from '../services/contracts/IBooksService';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BooksUiDataService implements IBooksUiDataService {
-  booksService: BooksService;
-  categoriesService: CategoriesService;
-  authorsService: AuthorsService;
-  favoritesService: FavoritesService;
+  booksService: IBooksService;
+  categoriesService: ICategoriesService;
+  authorsService: IAuthorsService;
+  favoritesService: IFavoritesService;
+  userService: IUserService;
 
   constructor(
-    booksService: BooksService,
-    categoriesService: CategoriesService,
-    authorsService: AuthorsService,
-    favoritesService: FavoritesService
+    @Inject(BooksService) booksService: IBooksService,
+    @Inject(CategoriesService) categoriesService: ICategoriesService,
+    @Inject(AuthorsService) authorsService: IAuthorsService,
+    @Inject(FavoritesService) favoritesService: IFavoritesService,
+    @Inject(UserService) userService: IUserService
   ) {
     this.booksService = booksService;
     this.categoriesService = categoriesService;
     this.authorsService = authorsService;
     this.favoritesService = favoritesService;
+    this.userService = userService;
   }
 
   booksPageData(filter: BooksFilter): Observable<Book[]> {
@@ -41,7 +49,7 @@ export class BooksUiDataService implements IBooksUiDataService {
         const authorIds: number[] = books
           .selectNumbers((x) => x.authorId)
           .distinct();
-        const user = getUser();
+        const user = this.userService.getUser();
         return forkJoin({
           categories: this.categoriesService.getById(categoryIds),
           authors: this.authorsService.getById(authorIds),
