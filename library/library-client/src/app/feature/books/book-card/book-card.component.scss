@@ -1,0 +1,16 @@
+img,
+svg {
+  margin: 0.5rem auto;
+  max-width: 140px;
+  max-height: 140px;
+}
+
+.card-body {
+  padding: 0.5rem;
+}
+
+.card-title {
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

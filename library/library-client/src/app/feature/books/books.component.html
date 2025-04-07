@@ -1,0 +1,17 @@
+<div class="container mt-1 books">
+  <div class="row">
+    <div class="col-12">
+      <app-books-filter
+        (onChange)="onFilterChange($event)"
+        (onSearchInput)="onSearchInput($event)"
+      ></app-books-filter>
+    </div>
+  </div>
+  <div class="row" [ngStyle]="{ 'justify-content': 'center' }">
+    <app-book-card
+      class="book card col-md-2 m-2"
+      [book]="book"
+      *ngFor="let book of books | booksClientSideFilter : search"
+    ></app-book-card>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<select class="form-select" (change)="onChange($event)">
+  <option *ngIf="nullable" [value]="" selected>Select</option>
+  <option
+    *ngFor="let option of options"
+    [value]="option.value"
+    [selected]="option.selected"
+    [disabled]="option.disabled"
+  >
+    {{ option.text }}
+  </option>
+</select>

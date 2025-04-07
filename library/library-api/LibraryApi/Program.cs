@@ -2,24 +2,35 @@ using System.Text;
 using LibraryApi.Infrastructure.Contracts;
 using LibraryApi.Infrastructure.Providers;
 using LibraryApi.Infrastructure.Services;
-using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuthentication("JwtBearer")
-.AddJwtBearer("JwtBearer", options =>
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+
+builder.Services.AddAuthentication(options =>
 {
-    var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
     options.TokenValidationParameters = new TokenValidationParameters
     {
+        ValidateIssuer = true,
+        ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Secret"]))
     };
 });
+
 builder.Services.AddAuthorization();
 
 builder.Services
@@ -30,8 +41,34 @@ builder.Services
         options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     });
+
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter into field the word 'Bearer' followed by a space and the JWT value",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+       {
+           {
+               new OpenApiSecurityScheme
+               {
+                   Reference = new OpenApiReference
+                   {
+                       Type = ReferenceType.SecurityScheme,
+                       Id = JwtBearerDefaults.AuthenticationScheme,
+                   }
+               },
+               new string[] {}
+           }
+       });
+});
 
 builder.Services.AddCors(options =>
 {
@@ -44,6 +81,10 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IAuthenticationProvider, AuthenticationProvider>();
 builder.Services.AddScoped<TokenProvider>();
 builder.Services.AddSingleton<IAccountService, AccountService>();
+builder.Services.AddSingleton<IBookService, BookService>();
+builder.Services.AddSingleton<IAuthorService, AuthorService>();
+builder.Services.AddSingleton<ICategoryService, CategoryService>();
+builder.Services.AddSingleton<IFavoriteBookService, FavoriteBookService>();
 
 var app = builder.Build();
 
@@ -68,11 +109,11 @@ app.UseSwaggerUI(x =>
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseCors("AllowAllOrigins");
 
-app.UseAuthentication();
 app.UseDeveloperExceptionPage();
 app.UseHttpsRedirection();
 

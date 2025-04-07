@@ -1,0 +1,35 @@
+<div class="row books-filter">
+  <div class="col">
+    <label class="form-label">Author</label>
+    <app-select
+      [nullable]="true"
+      [options]="authorOptions"
+      (onSelectChange)="onAuthorsChange($event)"
+    >
+    </app-select>
+  </div>
+
+  <div class="col">
+    <label class="form-label">Sort</label>
+
+    <app-select
+      [nullable]="true"
+      [options]="sortOptions"
+      (onSelectChange)="onSortChange($event)"
+    ></app-select>
+  </div>
+
+  <div class="col" *ngIf="currentUser !== null" style="padding-top: 37px">
+    <app-toggler
+      label="Show favorites"
+      (onToggle)="onShowFavoritesChange($event)"
+    ></app-toggler>
+  </div>
+
+  <div class="col" style="padding-top: 32px">
+    <app-string-input
+      placeholder="Search"
+      (valueChange)="onSeachInput($event)"
+    ></app-string-input>
+  </div>
+</div>

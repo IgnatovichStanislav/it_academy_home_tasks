@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
-namespace LibraryApi.Requests
+namespace LibraryApi.Infrastructure.Models.Token
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class TokenRequest

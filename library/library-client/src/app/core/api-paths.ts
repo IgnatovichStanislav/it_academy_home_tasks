@@ -5,5 +5,11 @@ export const AuthPaths = {
 
 export enum ApiPaths {
   Books = '/books',
-  Categories = '/categories',
+  BooksGetByFilter = '/books/getbyfilter',
+  CategoriesGetByIds = '/categories/getbyids',
+  AuthorsGetAll = '/authors/getall',
+  AuthorsGetByIds = '/authors/getbyids',
+  FavoriteBooksGet = '/favoritebooks/get',
+  FavoriteBooksPost = '/favoritebooks/post',
+  FavoriteBooksDelete = '/favoritebooks/delete',
 }

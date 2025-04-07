@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../../../core/services/authentication.service';
+import { AuthenticationService } from '../../../core/services/AuthenticationService';
 import { NgIf } from '@angular/common';
 
 @Component({
@@ -54,8 +54,8 @@ export class SigninComponent {
         next: () => {
           this.router.navigate(['/books']);
         },
-        error: () => {
-          this.error = 'Login failed';
+        error: (err) => {
+          this.error = err?.error ?? 'Login failed';
         },
       });
     }

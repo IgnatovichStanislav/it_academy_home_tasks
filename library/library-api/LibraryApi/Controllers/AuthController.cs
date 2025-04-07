@@ -1,8 +1,8 @@
 ﻿using LibraryApi.Infrastructure.Contracts;
 using LibraryApi.Infrastructure.Enums;
 using LibraryApi.Infrastructure.Models;
+using LibraryApi.Infrastructure.Models.Token;
 using LibraryApi.Infrastructure.Providers;
-using LibraryApi.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,12 +19,12 @@ namespace LibraryApi.Controllers
         {
             var account = accountService.Get(signupRequest.Username);
 
-            if (account != null) 
+            if (account != null)
                 return Conflict("Username already exists");
 
             var newAccount = new Account
             {
-                Username = signupRequest.Username,
+                UserName = signupRequest.Username,
                 Password = signupRequest.Password,
                 FirstName = signupRequest.FirstName,
                 LastName = signupRequest.LastName
@@ -34,7 +34,7 @@ namespace LibraryApi.Controllers
 
             return Ok(new
             {
-                newAccount.Username,
+                Username = newAccount.UserName,
                 newAccount.FirstName,
                 newAccount.LastName,
             });
@@ -54,11 +54,19 @@ namespace LibraryApi.Controllers
 
             var token = tokenProvider.GetToken(account);
 
-            return Ok(new
+            var value = new TokenResponse
             {
-                authToken = token
-            });
-        }
+                AuthToken = token,
+                User = new User
+                {
+                    UserName = account.UserName,
+                    FirstName = account.FirstName,
+                    LastName = account.LastName,
+                    Id = account.Id
+                }
+            };
 
+            return Ok(value);
+        }
     }
 }

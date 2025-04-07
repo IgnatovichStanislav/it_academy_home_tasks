@@ -12,7 +12,7 @@ public class TokenProvider(IConfiguration configuration)
     {
         var claims = new List<Claim>
         {
-            new(ClaimTypes.Name, account.Username),
+            new(ClaimTypes.Name, account.UserName),
             new(ClaimTypes.NameIdentifier, account.Id.ToString()),
             new("Firstname", account.FirstName),
             new("Lastname", account.LastName),
@@ -24,6 +24,8 @@ public class TokenProvider(IConfiguration configuration)
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
+            Audience = jwtSettings["Audience"],
+            Issuer = jwtSettings["Issuer"],
             Subject = claimsIdentity,
             Expires = DateTime.UtcNow.AddDays(90),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256Signature)
