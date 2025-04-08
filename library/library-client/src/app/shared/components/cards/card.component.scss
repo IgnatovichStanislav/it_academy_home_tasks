@@ -14,3 +14,11 @@ svg {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+.card {
+  justify-content: center;
+}
+
+.card.selected {
+  border: 2px solid #007bff !important;
+}

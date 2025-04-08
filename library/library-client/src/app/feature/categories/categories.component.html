@@ -1,1 +1,12 @@
-<p>categories works!</p>
+<div class="container mt-1 books" [style]="{ minHeight: '100vh' }">
+  <app-categories-filter
+    (books)="onBooksUpdate($event)"
+  ></app-categories-filter>
+  <div class="row" [ngStyle]="{ 'justify-content': 'center' }">
+    <app-book-card
+      class="col-md-2 m-2"
+      [book]="book"
+      *ngFor="let book of books"
+    ></app-book-card>
+  </div>
+</div>

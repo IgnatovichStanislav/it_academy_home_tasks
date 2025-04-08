@@ -1,12 +1,15 @@
 <div class="container mt-1 books" [style]="{ minHeight: '100vh' }">
   <div class="row">
     <div class="col-12">
-      <app-books-filter></app-books-filter>
+      <app-books-filter
+        (books)="onBooksUpdate($event)"
+        (search)="onSearchUpdate($event)"
+      ></app-books-filter>
     </div>
   </div>
-  <div class="row" [ngStyle]="{ 'justify-content': 'center' }">
+  <div class="row">
     <app-book-card
-      class="book card col-md-2 m-2"
+      class="col-md-2 m-2"
       [book]="book"
       *ngFor="let book of books | booksClientSideFilter : search"
     ></app-book-card>

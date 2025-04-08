@@ -24,5 +24,11 @@ namespace LibraryApi.Controllers
         {
             return Ok(categoryService.Get(ids));
         }
+
+        [HttpGet("getall")]
+        public ActionResult<IEnumerable<Category>> GetAll()
+        {
+            return Ok(categoryService.GetAll());
+        }
     }
 }

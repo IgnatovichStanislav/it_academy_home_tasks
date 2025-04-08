@@ -1,0 +1,32 @@
+<div
+  class="category card {{ selected ? 'selected' : '' }}"
+  (click)="onCardClick($event)"
+>
+  <img
+    *ngIf="category.pixUrl; else elseBlock"
+    src="{{ category.pixUrl }}"
+    class="img-fluid"
+    alt=""
+  />
+
+  <ng-template #elseBlock>
+    <svg
+      class="bd-placeholder-img"
+      width="100%"
+      height="140"
+      xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-label="Placeholder: Image cap"
+      preserveAspectRatio="xMidYMid slice"
+      focusable="false"
+    >
+      <title>Placeholder</title>
+      <rect width="100%" height="100%" fill="#868e96"></rect>
+      <text x="35%" y="51%" fill="#dee2e6" dy=".3em">Image</text>
+    </svg>
+  </ng-template>
+
+  <div class="card-body">
+    <h5 class="card-title" title="{{ category.name }}">{{ category.name }}</h5>
+  </div>
+</div>

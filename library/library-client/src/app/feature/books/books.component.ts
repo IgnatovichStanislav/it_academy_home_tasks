@@ -1,11 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component } from '@angular/core';
 import { Book } from '../../core/models/books/Book';
-import { BooksFilter } from '../../core/models/books/BooksFilter';
-import { BooksUiDataService } from '../../core/ui-data-services/BooksUiDataService';
 import { BooksFilterComponent } from './books-filter/books-filter.component';
-import { NgFor, NgStyle } from '@angular/common';
-import { BookCardComponent } from './book-card/book-card.component';
+import { NgFor } from '@angular/common';
+import { BookCardComponent } from '../../shared/components/cards/book-card/book-card.component';
 import { BooksClientSideFilterPipe } from '../../shared/pipes/books-client-side-filter.pipe';
 
 @Component({
@@ -15,7 +12,6 @@ import { BooksClientSideFilterPipe } from '../../shared/pipes/books-client-side-
     NgFor,
     BookCardComponent,
     BooksClientSideFilterPipe,
-    NgStyle,
   ],
   templateUrl: './books.component.html',
   styleUrl: './books.component.scss',
@@ -23,22 +19,16 @@ import { BooksClientSideFilterPipe } from '../../shared/pipes/books-client-side-
 export class BooksComponent {
   books: Book[] = [];
   search = '';
-
   constructor() {}
-
-  @ViewChild(BooksFilterComponent) booksFilterComponent!: BooksFilterComponent;
-
-  ngAfterViewInit(): void {
-    this.booksFilterComponent.booksObservable.subscribe(
-      (books: Book[]) => (this.books = books)
-    );
-
-    this.booksFilterComponent.searchObservable.subscribe(
-      (search: string) => (this.search = search)
-    );
-  }
 
   onBookClick(book: Book): void {
     console.log('Book clicked:', book);
+  }
+
+  onBooksUpdate(books: Book[]): void {
+    this.books = books;
+  }
+  onSearchUpdate(search: string): void {
+    this.search = search;
   }
 }

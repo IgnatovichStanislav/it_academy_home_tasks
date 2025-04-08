@@ -7,6 +7,8 @@ export enum ApiPaths {
   Books = '/books',
   BooksGetByFilter = '/books/getbyfilter',
   CategoriesGetByIds = '/categories/getbyids',
+  CategoriesGetAll = '/categories/getall',
+
   AuthorsGetAll = '/authors/getall',
   AuthorsGetByIds = '/authors/getbyids',
   FavoriteBooksGet = '/favoritebooks/get',

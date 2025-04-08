@@ -1,21 +1,22 @@
 import { Component, Inject, Input } from '@angular/core';
 import { of } from 'rxjs';
-import { Book } from '../../../core/models/books/Book';
+import { Book } from '../../../../core/models/books/Book';
 import { NgIf } from '@angular/common';
 import { DatePipe } from '@angular/common';
-import { User } from '../../../core/models/user';
-import { getUser } from '../../../core/helpers/UserHelper';
-import { ButtonComponent } from '../../../shared/components/buttons/button.component';
+import { User } from '../../../../core/models/user';
+import { ButtonComponent } from '../../buttons/button.component';
 import { switchMap, tap } from 'rxjs';
-import { FavoritesService } from '../../../core/services/FavoritesService';
-import { FavoriteBook } from '../../../core/models/favoriteBook/FavoriteBook';
-import { IFavoritesService } from '../../../core/services/contracts/IFavoritesService';
+import { FavoritesService } from '../../../../core/services/FavoritesService';
+import { FavoriteBook } from '../../../../core/models/favoriteBook/FavoriteBook';
+import { IFavoritesService } from '../../../../core/services/contracts/IFavoritesService';
+import { UserService } from '../../../../core/services/UserService';
+import { IUserService } from '../../../../core/services/contracts/IUserService';
 
 @Component({
   selector: 'app-book-card',
   imports: [NgIf, DatePipe, ButtonComponent],
   templateUrl: './book-card.component.html',
-  styleUrl: './book-card.component.scss',
+  styleUrl: '../card.component.scss',
 })
 export class BookCardComponent {
   @Input() book!: Book;
@@ -23,9 +24,12 @@ export class BookCardComponent {
   currentUser: User | null = null;
   favoritesService: IFavoritesService;
 
-  constructor(@Inject(FavoritesService) favoritesService: IFavoritesService) {
+  constructor(
+    @Inject(FavoritesService) favoritesService: IFavoritesService,
+    @Inject(UserService) userService: IUserService
+  ) {
     this.favoritesService = favoritesService;
-    this.currentUser = getUser();
+    this.currentUser = userService.getUser();
   }
 
   onSetFavorites(event: Event, isFavorite: boolean): void {

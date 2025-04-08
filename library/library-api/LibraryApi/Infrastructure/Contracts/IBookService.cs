@@ -16,6 +16,7 @@ public interface ICategoryService
 {
     Category[] Get(params int[] ids);
 
+    Category[] GetAll();
 }
 public interface IAuthorService
 {
