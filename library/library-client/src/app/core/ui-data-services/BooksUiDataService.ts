@@ -1,9 +1,11 @@
 import { Inject, Injectable } from '@angular/core';
+
+import { forkJoin, iif, map, Observable, of, switchMap, tap } from 'rxjs';
+
 import { Book } from '../models/books/Book';
 import { BooksFilter } from '../models/books/BooksFilter';
 import { BooksService } from '../services/BooksService';
 import { CategoriesService } from '../services/CategoriesService';
-import { forkJoin, map, mergeMap, Observable, of, tap } from 'rxjs';
 import { AuthorsService } from '../services/AuthorsService';
 import '../extensions/ArrayExtensions';
 import { FavoritesService } from '../services/FavoritesService';
@@ -42,7 +44,7 @@ export class BooksUiDataService implements IBooksUiDataService {
 
   booksPageData(filter: BooksFilter): Observable<Book[]> {
     return this.booksService.getByFilter(filter).pipe(
-      mergeMap((books: Book[]) => {
+      switchMap((books: Book[]) => {
         const categoryIds: number[] = books
           .selectNumbers((x) => x.categoryId)
           .distinct();
@@ -53,9 +55,11 @@ export class BooksUiDataService implements IBooksUiDataService {
         return forkJoin({
           categories: this.categoriesService.getById(categoryIds),
           authors: this.authorsService.getById(authorIds),
-          favorites: user
-            ? this.favoritesService.getBooksByCurrentUser()
-            : of<FavoriteBook[]>([]),
+          favorites: iif(
+            () => user !== null && user !== undefined,
+            this.favoritesService.getBooksByCurrentUser(),
+            of<FavoriteBook[]>([])
+          ),
         }).pipe(
           map(({ categories, authors, favorites }) => {
             books.forEach((book: Book) => {

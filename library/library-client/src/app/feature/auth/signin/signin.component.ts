@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -12,6 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../core/services/AuthenticationService';
 import { NgIf } from '@angular/common';
+
 import { IAuthenticationService } from '../../../core/services/contracts/IAuthenticationService';
 
 @Component({
@@ -29,7 +30,6 @@ import { IAuthenticationService } from '../../../core/services/contracts/IAuthen
 })
 export class SigninComponent {
   @Input() error: string | null = '';
-  @Output() submitEM = new EventEmitter();
   authService: IAuthenticationService;
   router: Router;
 

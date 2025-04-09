@@ -27,7 +27,8 @@ namespace LibraryApi.Controllers
                 UserName = signupRequest.Username,
                 Password = signupRequest.Password,
                 FirstName = signupRequest.FirstName,
-                LastName = signupRequest.LastName
+                LastName = signupRequest.LastName,
+                Role = RoleEnum.User
             };
 
             accountService.Create(newAccount);
@@ -37,6 +38,7 @@ namespace LibraryApi.Controllers
                 Username = newAccount.UserName,
                 newAccount.FirstName,
                 newAccount.LastName,
+                newAccount.Role,
             });
         }
 
@@ -62,6 +64,7 @@ namespace LibraryApi.Controllers
                     UserName = account.UserName,
                     FirstName = account.FirstName,
                     LastName = account.LastName,
+                    Role = (int)account.Role,
                     Id = account.Id
                 }
             };

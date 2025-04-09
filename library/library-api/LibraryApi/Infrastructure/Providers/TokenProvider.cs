@@ -16,6 +16,7 @@ public class TokenProvider(IConfiguration configuration)
             new(ClaimTypes.NameIdentifier, account.Id.ToString()),
             new("Firstname", account.FirstName),
             new("Lastname", account.LastName),
+            new(ClaimTypes.Role, ((int)account.Role).ToString())
         };
 
         var claimsIdentity = new ClaimsIdentity(claims, "JwtBearer");

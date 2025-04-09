@@ -6,7 +6,7 @@ namespace LibraryApi.Infrastructure.Services;
 public class AccountService : IAccountService
 {
     private List<Account> _accounts =
-        [new Account { Id = 1, UserName = "admin", Password = "admin", FirstName = "Admin", LastName = "User" }];
+        [new Account {Role=RoleEnum.Admin, Id = 1, UserName = "admin", Password = "admin", FirstName = "Admin", LastName = "User" }];
 
     public Account? Get(string userName) => _accounts.FirstOrDefault(a => a.UserName == userName);
     public void Create(Account newAccount)

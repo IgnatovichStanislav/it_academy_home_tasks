@@ -7,4 +7,11 @@ public class Account
     public string Password { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
+    public RoleEnum Role { get; set; }
+}
+
+public enum RoleEnum
+{
+    Admin=1,
+    User=2
 }

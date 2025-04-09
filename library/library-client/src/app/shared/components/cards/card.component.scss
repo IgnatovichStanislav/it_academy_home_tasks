@@ -22,3 +22,12 @@ svg {
 .card.selected {
   border: 2px solid #007bff !important;
 }
+
+.category.card {
+  height: 205px;
+  text-align: center;
+}
+
+.category.card img {
+  height: 200px;
+}

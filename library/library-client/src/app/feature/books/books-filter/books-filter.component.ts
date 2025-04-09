@@ -1,4 +1,9 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { NgIf } from '@angular/common';
+
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { switchMap } from 'rxjs/internal/operators/switchMap';
+
 import { BooksFilter } from '../../../core/models/books/BooksFilter';
 import { StringInputComponent } from '../../../shared/components/string-input/string-input.component';
 import { TogglerComponent } from '../../../shared/components/toggler/toggler.component';
@@ -6,10 +11,7 @@ import { SelectComponent } from '../../../shared/components/select/select.compon
 import { selectListItem } from '../../../core/models/selectListItem';
 import { AuthorsService } from '../../../core/services/AuthorsService';
 import { Author } from '../../../core/models/authors/Author';
-import { NgIf } from '@angular/common';
 import { User } from '../../../core/models/user';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { switchMap } from 'rxjs/internal/operators/switchMap';
 import { BooksUiDataService } from '../../../core/ui-data-services/BooksUiDataService';
 import { Book } from '../../../core/models/books/Book';
 import { IAuthorsService } from '../../../core/services/contracts/IAuthorsService';
@@ -23,7 +25,7 @@ import { IUserService } from '../../../core/services/contracts/IUserService';
   templateUrl: './books-filter.component.html',
   styleUrl: './books-filter.component.scss',
 })
-export class BooksFilterComponent implements OnInit {
+export class BooksFilterComponent {
   @Output() books: EventEmitter<Book[]> = new EventEmitter<Book[]>();
   @Output() search: EventEmitter<string> = new EventEmitter<string>();
 
@@ -59,33 +61,30 @@ export class BooksFilterComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {}
-
   onSeachInput(value: string): void {
     this.search.emit(value);
   }
 
   onShowFavoritesChange(value: boolean): void {
-    //Question: Should I create copy of this.filter.value change prop and next()
-    // or i can change prop directly in observable?
-
-    // const filter = { ...this.filter.value };
-    // filter.showFavorites = value;
-    // this.filter.next(filter);
-
-    this.filter.value.showFavorites = value;
-    this.filter.next(this.filter.value);
+    const currentFilter = this.filter.value;
+    this.filter.next({ ...currentFilter, showFavorites: value });
   }
 
   onSortChange(value: selectListItem | undefined): void {
-    this.filter.value.sortBy =
-      value && value.value ? String(value.value) : undefined;
-    this.filter.next(this.filter.value);
+    const currentFilter = this.filter.value;
+
+    this.filter.next({
+      ...currentFilter,
+      sortBy: value && value.value ? value.value.toString() : undefined,
+    });
   }
 
   onAuthorsChange(value: selectListItem | undefined): void {
-    this.filter.value.author = value?.value ? Number(value.value) : undefined;
-    this.filter.next(this.filter.value);
+    const currentFilter = this.filter.value;
+    this.filter.next({
+      ...currentFilter,
+      author: value?.value ? +value.value : undefined,
+    });
   }
 
   setAuthorOptions() {
