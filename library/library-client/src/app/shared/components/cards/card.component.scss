@@ -1,0 +1,33 @@
+img,
+svg {
+  margin: 0.5rem auto;
+  max-width: 140px;
+  max-height: 140px;
+}
+
+.card-body {
+  padding: 0.5rem;
+}
+
+.card-title {
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.card {
+  justify-content: center;
+}
+
+.card.selected {
+  border: 2px solid #007bff !important;
+}
+
+.category.card {
+  height: 205px;
+  text-align: center;
+}
+
+.category.card img {
+  height: 200px;
+}

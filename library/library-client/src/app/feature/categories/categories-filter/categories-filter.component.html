@@ -1,0 +1,11 @@
+<div class="row categories-filter">
+  <app-category-card
+    class="col-md-2 m-2"
+    [category]="category"
+    *ngFor="let category of categories"
+    (onSelectChange)="onCategorySelect($event)"
+    [selected]="
+      selectedCategory && category.id === selectedCategory.id ? true : false
+    "
+  ></app-category-card>
+</div>
