@@ -2,6 +2,7 @@
   <app-categories-filter
     [categories]="categories"
     (onFilterChange)="onFilterChange($event)"
+    [selectedCategoryId]="categoryId"
   ></app-categories-filter>
 
   @if(this.loading){

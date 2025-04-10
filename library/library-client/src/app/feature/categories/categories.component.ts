@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject, Inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
 
@@ -15,6 +15,12 @@ import { LoadingIndicatorComponent } from '../../shared/components/loading-indic
 
 import { CategoriesFilterComponent } from './categories-filter/categories-filter.component';
 import { BooksListComponent } from '../books/books-list/books-list.component';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Observable } from 'rxjs/internal/Observable';
+import { map } from 'rxjs/internal/operators/map';
+import { combineLatest, tap } from 'rxjs';
+import { NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-categories',
@@ -27,28 +33,39 @@ import { BooksListComponent } from '../books/books-list/books-list.component';
   styleUrl: './categories.component.scss',
 })
 export class CategoriesComponent {
-  loadingService: ILoadingService;
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly booksUiDataService = inject(BooksUiDataService);
+  private readonly loadingService = inject(LoadingService);
+  private readonly categoriesService = inject(CategoriesService);
 
   books: Book[] = [];
   categories: Category[] = [];
-  filter: BehaviorSubject<BooksFilter> = new BehaviorSubject<BooksFilter>({});
-  loading: boolean = false;
-  constructor(
-    @Inject(BooksUiDataService) booksUiDataService: IBooksUiDataService,
-    @Inject(CategoriesService) categoriesService: ICategoriesService,
-    @Inject(LoadingService) loadingService: ILoadingService
-  ) {
-    this.loadingService = loadingService;
+  loading: boolean = true;
+  filter: BooksFilter = {};
+  categoryId: number | undefined = undefined;
 
-    categoriesService
+  constructor() {
+    this.categoriesService
       .getCategories()
-      .subscribe((authors: Category[]) => (this.categories = authors));
+      .subscribe((categories: Category[]) => (this.categories = categories));
 
-    this.filter
+    this.activatedRoute.queryParams
+      .pipe(
+        map((params: Params) => {
+          this.categoryId = params['categoryId']
+            ? +params['categoryId']
+            : undefined;
+
+          return {
+            categoryId: this.categoryId,
+          };
+        })
+      )
       .pipe(
         switchMap((filter: BooksFilter) => {
           this.loading = this.loadingService.loadingOn();
-          return booksUiDataService.booksPageData(filter);
+          return this.booksUiDataService.booksPageData(filter);
         })
       )
       .subscribe((books: Book[]) => {
@@ -58,6 +75,9 @@ export class CategoriesComponent {
   }
 
   onFilterChange(filter: BooksFilter): void {
-    this.filter.next({ ...filter });
+    this.router.navigate([], {
+      queryParams: filter,
+      queryParamsHandling: 'merge',
+    });
   }
 }

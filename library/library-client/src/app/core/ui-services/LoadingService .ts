@@ -10,7 +10,7 @@ import { ILoadingService } from './contracts/ILoadingService';
 export class LoadingService implements ILoadingService {
   private loadingSubject = new BehaviorSubject<boolean>(false);
 
-  loadingState = this.loadingSubject.asObservable();
+  public loadingState = this.loadingSubject.asObservable();
 
   loadingOn(): boolean {
     const loading = true;

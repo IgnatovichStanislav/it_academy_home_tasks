@@ -12,6 +12,7 @@ export class CategoryCardComponent {
   @Input() category!: Category;
   @Output() onSelectChange = new EventEmitter<Category | undefined>();
   @Input() selected: boolean = false;
+
   onCardClick(event: Event): void {
     this.onSelectChange.emit(!this.selected ? this.category : undefined);
   }

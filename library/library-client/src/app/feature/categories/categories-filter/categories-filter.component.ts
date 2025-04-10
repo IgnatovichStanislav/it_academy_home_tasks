@@ -15,7 +15,7 @@ export class CategoriesFilterComponent {
   @Input() categories: Category[] = [];
   @Output() onFilterChange: EventEmitter<BooksFilter> =
     new EventEmitter<BooksFilter>();
-
+  @Input() selectedCategoryId: number | undefined = undefined;
   selectedCategory: Category | undefined = undefined;
 
   constructor() {}
