@@ -3,5 +3,5 @@ import { Observable } from 'rxjs';
 
 export interface ICategoriesService {
   getById(ids: number[]): Observable<Category[]>;
-  getAll(): Observable<Category[]>;
+  getCategories(): Observable<Category[]>;
 }

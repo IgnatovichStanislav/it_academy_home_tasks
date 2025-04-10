@@ -14,7 +14,7 @@ export class CategoriesService implements ICategoriesService {
   constructor(http: HttpClient) {
     this.http = http;
   }
-  getAll(): Observable<Category[]> {
+  getCategories(): Observable<Category[]> {
     const url = `${environment.baseApiUrl}${ApiPaths.CategoriesGetAll}`;
     return this.http.get<Category[]>(url);
   }

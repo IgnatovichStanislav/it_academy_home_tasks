@@ -1,0 +1,7 @@
+<div class="row books-list">
+  <app-book-card
+    class="col-md-2 m-2"
+    [book]="book"
+    *ngFor="let book of books | booksClientSideFilter : search"
+  ></app-book-card>
+</div>

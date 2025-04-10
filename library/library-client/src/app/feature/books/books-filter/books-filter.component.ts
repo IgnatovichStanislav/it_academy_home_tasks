@@ -1,21 +1,22 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnInit,
+  Output,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { NgIf } from '@angular/common';
-
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { switchMap } from 'rxjs/internal/operators/switchMap';
 
 import { BooksFilter } from '../../../core/models/books/BooksFilter';
 import { StringInputComponent } from '../../../shared/components/string-input/string-input.component';
 import { TogglerComponent } from '../../../shared/components/toggler/toggler.component';
 import { SelectComponent } from '../../../shared/components/select/select.component';
 import { selectListItem } from '../../../core/models/selectListItem';
-import { AuthorsService } from '../../../core/services/AuthorsService';
 import { Author } from '../../../core/models/authors/Author';
 import { User } from '../../../core/models/user';
-import { BooksUiDataService } from '../../../core/ui-data-services/BooksUiDataService';
-import { Book } from '../../../core/models/books/Book';
-import { IAuthorsService } from '../../../core/services/contracts/IAuthorsService';
-import { IBooksUiDataService } from '../../../core/ui-data-services/contracts/IBooksUiDataService';
 import { UserService } from '../../../core/services/UserService';
 import { IUserService } from '../../../core/services/contracts/IUserService';
 
@@ -23,77 +24,59 @@ import { IUserService } from '../../../core/services/contracts/IUserService';
   selector: 'app-books-filter',
   imports: [StringInputComponent, TogglerComponent, SelectComponent, NgIf],
   templateUrl: './books-filter.component.html',
-  styleUrl: './books-filter.component.scss',
 })
-export class BooksFilterComponent {
-  @Output() books: EventEmitter<Book[]> = new EventEmitter<Book[]>();
-  @Output() search: EventEmitter<string> = new EventEmitter<string>();
+export class BooksFilterComponent implements OnChanges {
+  @Input() authors: Author[] = [];
+  @Input() filter: BooksFilter = {};
+  @Input() search: string = '';
+  @Output() onSearchChange: EventEmitter<string> = new EventEmitter<string>();
+  @Output() onFilterChange: EventEmitter<BooksFilter> =
+    new EventEmitter<BooksFilter>();
 
-  filter = new BehaviorSubject<BooksFilter>({});
-  authorsService: IAuthorsService;
-  currentUser: User | null = null;
-
+  authorOptions: selectListItem[] = [];
   sortOptions: selectListItem[] = [
     { text: 'Title', value: 'title' },
     { text: 'Date', value: 'publicationDate' },
   ];
+  currentUser: User | null = null;
 
-  authorOptions: selectListItem[] = [];
-
-  constructor(
-    @Inject(AuthorsService) authorsService: IAuthorsService,
-    @Inject(BooksUiDataService) booksUiDataService: IBooksUiDataService,
-    @Inject(UserService) userService: IUserService
-  ) {
-    this.authorsService = authorsService;
-
+  constructor(@Inject(UserService) userService: IUserService) {
     this.currentUser = userService.getUser();
-    this.setAuthorOptions();
+  }
 
-    this.filter
-      .pipe(
-        switchMap((filter: BooksFilter) =>
-          booksUiDataService.booksPageData(filter)
-        )
-      )
-      .subscribe((books: Book[]) => {
-        this.books.emit(books);
-      });
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['authors'] && changes['authors'].currentValue.length) {
+      this.authorOptions = this.authors.map<selectListItem>(
+        (author: Author) => {
+          return {
+            text: author.name,
+            value: author.id,
+            selected: author.id === this.filter.author,
+          };
+        }
+      );
+    }
   }
 
   onSeachInput(value: string): void {
-    this.search.emit(value);
+    this.onSearchChange.emit(value);
   }
 
   onShowFavoritesChange(value: boolean): void {
-    const currentFilter = this.filter.value;
-    this.filter.next({ ...currentFilter, showFavorites: value });
+    this.onFilterChange.emit({ ...this.filter, showFavorites: value });
   }
 
   onSortChange(value: selectListItem | undefined): void {
-    const currentFilter = this.filter.value;
-
-    this.filter.next({
-      ...currentFilter,
+    this.onFilterChange.emit({
+      ...this.filter,
       sortBy: value && value.value ? value.value.toString() : undefined,
     });
   }
 
   onAuthorsChange(value: selectListItem | undefined): void {
-    const currentFilter = this.filter.value;
-    this.filter.next({
-      ...currentFilter,
+    this.onFilterChange.emit({
+      ...this.filter,
       author: value?.value ? +value.value : undefined,
-    });
-  }
-
-  setAuthorOptions() {
-    this.authorsService.getAuthors().subscribe((authors) => {
-      this.authorOptions = authors.map<selectListItem>(
-        (author: Author): selectListItem => {
-          return { text: author.name, value: author.id };
-        }
-      );
     });
   }
 }
