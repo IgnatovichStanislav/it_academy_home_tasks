@@ -1,4 +1,4 @@
-import { RoleEnum } from '../Enums/RoleEnum';
+import { RoleEnum } from '../enums/RoleEnum';
 
 export type User = {
   userName: string;

@@ -8,17 +8,6 @@ namespace LibraryApi.Controllers
     [ApiController]
     public class AuthorsController(IAuthorService authorService) : ControllerBase
     {
-        [HttpGet("{id}")]
-        public ActionResult<Author> Get(int id)
-        {
-            var author = authorService.Get(id).FirstOrDefault();
-            if (author == null)
-            {
-                return NotFound();
-            }
-            return Ok(author);
-        }
-
         [HttpGet("getbyids")]
         public ActionResult<IEnumerable<Author>> Get([FromQuery] int[] ids)
         {

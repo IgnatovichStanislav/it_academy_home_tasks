@@ -23,9 +23,13 @@
           <a class="nav-link" [routerLink]="'/categories'">Categories</a>
         </li>
         <li class="nav-item button">
-          <button class="btn btn-primary" [routerLink]="'/add-book'">
+          <a
+            class="btn btn-primary"
+            target="_blank"
+            [routerLink]="'/books/add'"
+          >
             Add New
-          </button>
+          </a>
         </li>
       </ul>
       <div *ngIf="user !== null; else elseBlock" class="d-flex">

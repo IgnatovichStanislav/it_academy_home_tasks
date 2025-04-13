@@ -4,8 +4,5 @@
     [category]="category"
     *ngFor="let category of categories"
     (onSelectChange)="onCategorySelect($event)"
-    [selected]="
-      selectedCategory && category.id === selectedCategory.id ? true : false
-    "
   ></app-category-card>
 </div>

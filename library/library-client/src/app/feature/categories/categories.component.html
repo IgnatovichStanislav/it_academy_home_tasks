@@ -1,12 +1,13 @@
-<div class="container mt-1 books" [style]="{ minHeight: '100vh' }">
+<div class="container categories">
   <app-categories-filter
-    (books)="onBooksUpdate($event)"
+    [categories]="categories"
+    (onFilterChange)="onFilterChange($event)"
+    [selectedCategoryId]="categoryId"
   ></app-categories-filter>
-  <div class="row" [ngStyle]="{ 'justify-content': 'center' }">
-    <app-book-card
-      class="col-md-2 m-2"
-      [book]="book"
-      *ngFor="let book of books"
-    ></app-book-card>
-  </div>
+
+  @if(this.loading){
+  <app-loading-indicator></app-loading-indicator>
+  }@else{
+  <app-books-list [books]="books"></app-books-list>
+  }
 </div>

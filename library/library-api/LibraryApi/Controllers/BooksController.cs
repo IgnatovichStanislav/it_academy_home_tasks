@@ -17,7 +17,7 @@ namespace LibraryApi.Controllers
                 out var accountId);
 
             var books = bookService.Get(filter, accountId);
-            await Task.Delay(700);
+            await Task.Delay(600);
             return Ok(books);
         }
 
