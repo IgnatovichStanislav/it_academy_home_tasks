@@ -19,10 +19,16 @@ import { Author } from '../../../core/models/authors/Author';
 import { User } from '../../../core/models/user';
 import { UserService } from '../../../core/services/UserService';
 import { IUserService } from '../../../core/services/contracts/IUserService';
-
+import { CurrentUserDirective } from '../../../shared/directives/currentUser.directive';
 @Component({
   selector: 'app-books-filter',
-  imports: [StringInputComponent, TogglerComponent, SelectComponent, NgIf],
+  imports: [
+    StringInputComponent,
+    TogglerComponent,
+    SelectComponent,
+    NgIf,
+    CurrentUserDirective,
+  ],
   templateUrl: './books-filter.component.html',
 })
 export class BooksFilterComponent implements OnChanges {
@@ -38,11 +44,8 @@ export class BooksFilterComponent implements OnChanges {
     { text: 'Title', value: 'title' },
     { text: 'Date', value: 'publicationDate' },
   ];
-  currentUser: User | null = null;
 
-  constructor(@Inject(UserService) userService: IUserService) {
-    this.currentUser = userService.getUser();
-  }
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['authors'] && changes['authors'].currentValue.length) {
